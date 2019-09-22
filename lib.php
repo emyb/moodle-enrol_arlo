@@ -269,6 +269,12 @@ class enrol_arlo_plugin extends enrol_plugin {
             // Map group id to customint2.
             $fields['customint2'] = $groupid;
         }
+
+        if ($persistent::has_property('contenturi') && !is_null($persistent->get('contenturi'))) {
+            $url = new moodle_url('/enrol/instances.php', ['id' => $course->id]);
+            throw new moodle_exception('enrolmentinstancealreadylinked', 'enrol_arlo', $url->out(), $persistent->get('contenturi'));
+        }
+
         // Use parent to create enrolment instance.
         $instanceid = parent::add_instance($course, $fields);
 
